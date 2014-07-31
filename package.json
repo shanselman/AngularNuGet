@@ -1,0 +1,13 @@
+{
+  "name": "angular-nuget",
+  "version": "0.0.1",
+  "description": "angular nuget packaging",
+  "main": "mainapp.js",
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-curl": "~2.0.2"
+  },
+  "author": "John Papa"
+}
