@@ -15,23 +15,17 @@ module.exports = function (grunt) {
         'fetchpages': {
             dist: {
               options: {
-                baseURL: "<%= myApp.urlPrefix %>/",
+                baseURL: "<%= myApp.urlPrefix %>//i18n/",
                 urls: [
                     { url: '<%= myApp.urlPrefix %>/i18n/'}
                 ],
-                destinationFolder: './build/<%=grunt.option("ver")%>/angular-locale-<%=grunt.option("ver")%>/',
+                destinationFolder: './build/<%=grunt.option("ver")%>/angular-locale-<%=grunt.option("ver")%>/i18n/',
                 followLinks: true,
                 cleanHTML: false,
-                fetchBaseURL: false 
+                fetchBaseURL: false,
+                ignoreSelector: '[href="../"]'
               }
-            },
-              files: [
-                {
-                  src: ['**/*.js', '!url.html'],
-                  expand: true,
-                  cwd: '.'
-                }
-              ]
+            }
           },
 
         'curl-dir': {
@@ -248,5 +242,12 @@ module.exports = function (grunt) {
             //grunt.task.run(['fetchpages']);
     });
 
-    grunt.registerTask('default', ['download', 'template']); //still need --ver=1.2.9 for example
+    grunt.registerTask('download-locales', function(n){
+
+        grunt.file.mkdir('build/' +  grunt.option("ver") + '/angular-locale-' + grunt.option("ver") + '/i18n/');
+        //grunt.task.run(['fetchpages']);
+
+    });
+
+    grunt.registerTask('default', ['clean:version', 'download-locales','download', 'template']); //still need --ver=1.2.9 for example
 };
