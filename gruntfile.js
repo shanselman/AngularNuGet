@@ -237,17 +237,19 @@ module.exports = function (grunt) {
 
     grunt.registerTask('download', function(n) {
             grunt.log.writeln('GET angularjs version ' + grunt.option('ver'));
-            //grunt.task.run(['curl-dir','fetchpages']);
             grunt.task.run(['curl-dir']);
-            //grunt.task.run(['fetchpages']);
+    });
+
+    grunt.registerTask('pack', function(n) {
+
+
     });
 
     grunt.registerTask('download-locales', function(n){
 
         grunt.file.mkdir('build/' +  grunt.option("ver") + '/angular-locale-' + grunt.option("ver") + '/i18n/');
-        //grunt.task.run(['fetchpages']);
-
+        grunt.task.run(['fetchpages']);
     });
 
-    grunt.registerTask('default', ['clean:version', 'download-locales','download', 'template']); //still need --ver=1.2.9 for example
+    grunt.registerTask('default', [/* 'clean:version', 'download-locales', */'download', 'template']); //still need --ver=1.2.9 for example
 };

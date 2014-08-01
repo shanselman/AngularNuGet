@@ -24,4 +24,10 @@ DISCLAIMER: This package is maintained by Scott Hanselman and previously by John
         </dependencies>
         <% } %>
     </metadata>
+    <files>
+        <file src="*.*" target="content\scripts" />
+        <% if (module === 'Locale') { %>
+            <file src="i18n\*.js" target="content\scripts\i18n" />
+        <% } %>
+    </files>
 </package>
