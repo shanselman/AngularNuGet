@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id><%= id %></id>
+        <id>AngularJS.<%= module %></id>
         <version><%= version %></version>
         <title>AngularJS <%= module %></title>
         <authors>The AngularJS Team</authors>
@@ -12,13 +12,13 @@
         <description>See the AngularJS.* packages for other Angular modules</description>
         <summary>AngularJS. HTML enhanced for web apps!
 
-AngularJS.Route contains the Angular Route module. 
+AngularJS.<%= module %> contains the Angular <%= module %> module. 
 
 DISCLAIMER: This package is maintained by Scott Hanselman and previously by John Papa, but neither of us work on Angular JS. This is simply a repackaging for use by NuGet Users</summary>
         <language>en-US</language>
         <tags>angular angularjs</tags>
         
-        <% if (module !== 'core') { %>
+        <% if (module !== 'Core') { %>
         <dependencies>
             <dependency id="AngularJS.Core" version="<%= version %>" />
         </dependencies>

@@ -4,7 +4,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         version: {
             toFetch: grunt.option('ver'),
-            urlPrefix: 'https://code.angularjs.org/' + grunt.option('ver')
+            urlPrefix: 'https://code.angularjs.org/' + grunt.option('ver'),
+            module: grunt.option('module')
         },
 
         'curl-dir': {
@@ -14,7 +15,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-animate.min.js',
                 '<%= version.urlPrefix %>/angular-animate.min.js.map'
               ],
-              dest: './build/angular-animate-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-animate-<%=version.toFetch%>'
             },
             'core': {
               src: [
@@ -24,7 +25,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular.min.js.map',
                 '<%= version.urlPrefix %>/angular-mocks.js'
               ],
-              dest: './build/angular-core-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-core-<%=version.toFetch%>'
             },
             'cookies': {
               src: [
@@ -32,7 +33,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-cookies.min.js',
                 '<%= version.urlPrefix %>/angular-cookies.min.js.map'
               ],
-              dest: './build/angular-cookies-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-cookies-<%=version.toFetch%>'
             },
             'loader': {
               src: [
@@ -40,7 +41,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-loader.min.js',
                 '<%= version.urlPrefix %>/angular-loader.min.js.map'
               ],
-              dest: './build/angular-loader-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-loader-<%=version.toFetch%>'
             },
             'resource': {
               src: [
@@ -48,7 +49,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-resource.min.js',
                 '<%= version.urlPrefix %>/angular-resource.min.js.map'
               ],
-              dest: './build/angular-resource-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-resource-<%=version.toFetch%>'
             },
             'route': {
               src: [
@@ -56,7 +57,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-route.min.js',
                 '<%= version.urlPrefix %>/angular-route.min.js.map'
               ],
-              dest: './build/angular-route-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-route-<%=version.toFetch%>'
             },
             'sanitize': {
               src: [
@@ -64,7 +65,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-sanitize.min.js',
                 '<%= version.urlPrefix %>/angular-sanitize.min.js.map'
               ],
-              dest: './build/angular-sanitize-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-sanitize-<%=version.toFetch%>'
             },
             'touch': {
               src: [
@@ -72,7 +73,7 @@ module.exports = function (grunt) {
                 '<%= version.urlPrefix %>/angular-touch.min.js',
                 '<%= version.urlPrefix %>/angular-touch.min.js.map'
               ],
-              dest: './build/angular-touch-<%=version.toFetch%>'
+              dest: './build/<%=version.toFetch%>/angular-touch-<%=version.toFetch%>'
             }
         },
 
@@ -82,20 +83,25 @@ module.exports = function (grunt) {
                 },
                 'generate-nuspec': {
                     'options': {
-                        // Target-specific options go here
+                        'data': {
+                            'version': grunt.option('ver'),
+                            'module': grunt.option('module'),
+                            'id': 'AngularJS.' + grunt.option('module')
+                        }
+                        
                     },
                     'files': {
-                        // Target-specific file lists go here
+                        'build/<%= version.toFetch %>/angular-<%= version.module.toLowerCase() %>-<%= version.toFetch %>/package.nuspec': ['package.nuspec.tpl']
                     }
                 }
-            }
+            },
 
 
 
          clean: {
             options: { force: true },
             all: {
-                src: ['./build/*.*']
+                src: ['./build/<%=version.toFetch%>/*.*']
             }
         }
     });
@@ -103,11 +109,26 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-curl');
+    grunt.loadNpmTasks('grunt-template');
 
     grunt.registerTask('download', function(n) {
             console.log('GET angularjs version <%=version.toFetch%>');
             grunt.task.run(['curl-dir']);
+
     });
-    grunt.registerTask('default', ['prep']);
-    grunt.registerTask('prep', ['clean', 'copy']);
+    grunt.registerTask('generate', function(n) {
+        console.log('in generate task');
+
+        var modules = ['Core', 'Animate','Cookies','Loader','Resource','Route',
+            'Sanitize','Touch'];
+
+        for(module in modules)
+        {
+            console.log(module);
+            grunt.option('module', module);
+
+            grunt.task.run(['template']);
+        }
+
+    });
 };
