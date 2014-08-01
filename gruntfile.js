@@ -15,6 +15,12 @@ module.exports = function (grunt) {
             }
         },
 
+        nugetpush: {
+            dist: {
+                src: './build/<%= myApp.version %>/*.nupkg'
+            }
+        },
+
         'fetchpages': {
             dist: {
               options: {
@@ -243,6 +249,11 @@ module.exports = function (grunt) {
         grunt.log.writeln('GET angularjs version ' + grunt.config.get('myApp.version') + ' from ' + grunt.config.get('myApp.urlPrefix'));
         grunt.file.mkdir('build/' + grunt.config.get('myApp.version') + '/angular-locale-' + grunt.config.get('myApp.version') + '/i18n/');
         grunt.task.run(['fetchpages']);
+    });
+
+    grunt.registerTask('publish', function(n) {
+        grunt.task.run(['nugetpush']);
+        //NOTE: not tested but should work. ;)
     });
 
     grunt.registerTask('default', ['download-locales','download', 'template', 'pack']); 
