@@ -1,10 +1,5 @@
-// grunt download --ver=1.2.9
-
-// TODO: Wget all i18n? 
-//wget -A js -nd -np -r -erobots=off --no-check-certificate https://code.angularjs.org/<% version %>/i18n/
- 
-//wget -A js -nd -L -np -r -erobots=off --no-check-certificate https://code.angularjs.org/1.2.9/i18n/   
-
+// grunt --ver=1.2.21
+// grunt --ver=1.3.0-beta.17 (NOTE the dot, that's how Angular does it)
 
 module.exports = function (grunt) {
     grunt.initConfig({
@@ -223,9 +218,6 @@ module.exports = function (grunt) {
 
          clean: {
             options: { force: true },
-            all: {
-                src: ['./build/*.*']
-            },
             version: {
                 src: ['./build/<%= myApp.version %>/*.*']
             }
@@ -253,5 +245,6 @@ module.exports = function (grunt) {
         grunt.task.run(['fetchpages']);
     });
 
-    grunt.registerTask('default', ['download-locales','download', 'template', 'pack']); //still need --ver=1.2.9 for example
+    grunt.registerTask('default', ['download-locales','download', 'template', 'pack']); 
+    //Call with --ver=1.2.9 or --ver=1.3.0-beta.17 for example
 };
