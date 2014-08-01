@@ -1,107 +1,236 @@
 // grunt download --ver=1.2.9
 
+// TODO: Wget all i18n? 
+//wget -A js -nd -np -r -erobots=off --no-check-certificate https://code.angularjs.org/<% version %>/i18n/
+ 
+//wget -A js -nd -L -np -r -erobots=off --no-check-certificate https://code.angularjs.org/1.2.9/i18n/   
+
+
 module.exports = function (grunt) {
     grunt.initConfig({
-        version: {
-            toFetch: grunt.option('ver'),
-            urlPrefix: 'https://code.angularjs.org/' + grunt.option('ver'),
-            module: grunt.option('module')
+        myApp: {
+            urlPrefix: 'https://code.angularjs.org/' + grunt.option('ver')
         },
+
+        'fetchpages': {
+            dist: {
+              options: {
+                baseURL: "<%= myApp.urlPrefix %>/",
+                urls: [
+                    { url: '<%= myApp.urlPrefix %>/i18n/'}
+                ],
+                destinationFolder: './build/<%=grunt.option("ver")%>/angular-locale-<%=grunt.option("ver")%>/',
+                followLinks: true,
+                cleanHTML: false,
+                fetchBaseURL: false 
+              }
+            },
+              files: [
+                {
+                  src: ['**/*.js', '!url.html'],
+                  expand: true,
+                  cwd: '.'
+                }
+              ]
+          },
 
         'curl-dir': {
             'animate': {
               src: [
-                '<%= version.urlPrefix %>/angular-animate.js',
-                '<%= version.urlPrefix %>/angular-animate.min.js',
-                '<%= version.urlPrefix %>/angular-animate.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-animate.js',
+                '<%= myApp.urlPrefix %>/angular-animate.min.js',
+                '<%= myApp.urlPrefix %>/angular-animate.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-animate-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-animate-<%=grunt.option("ver")%>'
             },
             'core': {
               src: [
-                '<%= version.urlPrefix %>/angular.js',
-                '<%= version.urlPrefix %>/angular.min.js',
-                '<%= version.urlPrefix %>/angular.min.js.gzip',
-                '<%= version.urlPrefix %>/angular.min.js.map',
-                '<%= version.urlPrefix %>/angular-mocks.js'
+                '<%= myApp.urlPrefix %>/angular.js',
+                '<%= myApp.urlPrefix %>/angular.min.js',
+                '<%= myApp.urlPrefix %>/angular.min.js.gzip',
+                '<%= myApp.urlPrefix %>/angular.min.js.map',
+                '<%= myApp.urlPrefix %>/angular-mocks.js'
               ],
-              dest: './build/<%=version.toFetch%>/angular-core-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-core-<%=grunt.option("ver")%>'
             },
             'cookies': {
               src: [
-                '<%= version.urlPrefix %>/angular-cookies.js',
-                '<%= version.urlPrefix %>/angular-cookies.min.js',
-                '<%= version.urlPrefix %>/angular-cookies.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-cookies.js',
+                '<%= myApp.urlPrefix %>/angular-cookies.min.js',
+                '<%= myApp.urlPrefix %>/angular-cookies.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-cookies-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-cookies-<%=grunt.option("ver")%>'
             },
             'loader': {
               src: [
-                '<%= version.urlPrefix %>/angular-loader.js',
-                '<%= version.urlPrefix %>/angular-loader.min.js',
-                '<%= version.urlPrefix %>/angular-loader.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-loader.js',
+                '<%= myApp.urlPrefix %>/angular-loader.min.js',
+                '<%= myApp.urlPrefix %>/angular-loader.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-loader-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-loader-<%=grunt.option("ver")%>'
             },
             'resource': {
               src: [
-                '<%= version.urlPrefix %>/angular-resource.js',
-                '<%= version.urlPrefix %>/angular-resource.min.js',
-                '<%= version.urlPrefix %>/angular-resource.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-resource.js',
+                '<%= myApp.urlPrefix %>/angular-resource.min.js',
+                '<%= myApp.urlPrefix %>/angular-resource.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-resource-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-resource-<%=grunt.option("ver")%>'
             },
             'route': {
               src: [
-                '<%= version.urlPrefix %>/angular-route.js',
-                '<%= version.urlPrefix %>/angular-route.min.js',
-                '<%= version.urlPrefix %>/angular-route.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-route.js',
+                '<%= myApp.urlPrefix %>/angular-route.min.js',
+                '<%= myApp.urlPrefix %>/angular-route.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-route-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-route-<%=grunt.option("ver")%>'
             },
             'sanitize': {
               src: [
-                '<%= version.urlPrefix %>/angular-sanitize.js',
-                '<%= version.urlPrefix %>/angular-sanitize.min.js',
-                '<%= version.urlPrefix %>/angular-sanitize.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-sanitize.js',
+                '<%= myApp.urlPrefix %>/angular-sanitize.min.js',
+                '<%= myApp.urlPrefix %>/angular-sanitize.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-sanitize-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-sanitize-<%=grunt.option("ver")%>'
             },
             'touch': {
               src: [
-                '<%= version.urlPrefix %>/angular-touch.js',
-                '<%= version.urlPrefix %>/angular-touch.min.js',
-                '<%= version.urlPrefix %>/angular-touch.min.js.map'
+                '<%= myApp.urlPrefix %>/angular-touch.js',
+                '<%= myApp.urlPrefix %>/angular-touch.min.js',
+                '<%= myApp.urlPrefix %>/angular-touch.min.js.map'
               ],
-              dest: './build/<%=version.toFetch%>/angular-touch-<%=version.toFetch%>'
+              dest: './build/<%=grunt.option("ver")%>/angular-touch-<%=grunt.option("ver")%>'
             }
         },
 
         'template': {
                 'options': {
-                    // Task-specific options go here
                 },
-                'generate-nuspec': {
-                    'options': {
-                        'data': {
-                            'version': grunt.option('ver'),
-                            'module': grunt.option('module'),
-                            'id': 'AngularJS.' + grunt.option('module')
+                    'Core': {
+                        'options': {
+                            'data' : { 
+                                'module': "Core",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-core-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
                         }
-                        
+
                     },
-                    'files': {
-                        'build/<%= version.toFetch %>/angular-<%= version.module.toLowerCase() %>-<%= version.toFetch %>/package.nuspec': ['package.nuspec.tpl']
+                    'Animate': {
+                         'options': {
+                            'data' : { 
+                                'module': "Animate",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-animate-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Cookies': {
+                         'options': {
+                            'data' : { 
+                                'module': "Cookies",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-cookies-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Loader': {
+                         'options': {
+                            'data' : { 
+                                'module': "Loader",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-loader-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Loader': {
+                         'options': {
+                            'data' : { 
+                                'module': "Loader",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-loader-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Locale': {
+                         'options': {
+                            'data' : { 
+                                'module': "Locale",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-locale-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Resource': {
+                         'options': {
+                            'data' : { 
+                                'module': "Resource",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-resource-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Route': {
+                         'options': {
+                            'data' : { 
+                                'module': "Route",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-route-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Sanitize': {
+                         'options': {
+                            'data' : { 
+                                'module': "Sanitize",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-sanitize-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
+                    },
+                    'Touch': {
+                         'options': {
+                            'data' : { 
+                                'module': "Touch",
+                                'version': grunt.option('ver')
+                            }
+                        },
+                        'files': {
+                            'build/<%= grunt.option("ver") %>/angular-touch-<%= grunt.option("ver") %>/package.nuspec': ['package.nuspec.tpl']
+                        }
                     }
-                }
+
             },
 
-
+        'generate' : {
+             modules: ['Core', 'Animate','Cookies','Loader','Resource','Route','Sanitize','Touch']
+        },
 
          clean: {
             options: { force: true },
             all: {
-                src: ['./build/<%=version.toFetch%>/*.*']
+                src: ['./build/*.*']
+            },
+            version: {
+                src: ['./build/<%=grunt.option("ver")%>/*.*']
             }
         }
     });
@@ -110,25 +239,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-curl');
     grunt.loadNpmTasks('grunt-template');
+    grunt.loadNpmTasks('grunt-fetch-pages');
 
     grunt.registerTask('download', function(n) {
-            console.log('GET angularjs version <%=version.toFetch%>');
+            grunt.log.writeln('GET angularjs version ' + grunt.option('ver'));
+            //grunt.task.run(['curl-dir','fetchpages']);
             grunt.task.run(['curl-dir']);
-
+            //grunt.task.run(['fetchpages']);
     });
-    grunt.registerTask('generate', function(n) {
-        console.log('in generate task');
 
-        var modules = ['Core', 'Animate','Cookies','Loader','Resource','Route',
-            'Sanitize','Touch'];
-
-        for(module in modules)
-        {
-            console.log(module);
-            grunt.option('module', module);
-
-            grunt.task.run(['template']);
-        }
-
-    });
+    grunt.registerTask('default', ['download', 'template']); //still need --ver=1.2.9 for example
 };
