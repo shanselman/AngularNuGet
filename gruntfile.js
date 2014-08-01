@@ -12,6 +12,13 @@ module.exports = function (grunt) {
             urlPrefix: 'https://code.angularjs.org/' + grunt.option('ver')
         },
 
+        nugetpack: {
+            dist: {
+                src: './build/<%=grunt.option("ver")%>/**/package.nuspec',
+                dest: './build/<%=grunt.option("ver")%>'
+            }
+        },
+
         'fetchpages': {
             dist: {
               options: {
@@ -41,7 +48,6 @@ module.exports = function (grunt) {
               src: [
                 '<%= myApp.urlPrefix %>/angular.js',
                 '<%= myApp.urlPrefix %>/angular.min.js',
-                '<%= myApp.urlPrefix %>/angular.min.js.gzip',
                 '<%= myApp.urlPrefix %>/angular.min.js.map',
                 '<%= myApp.urlPrefix %>/angular-mocks.js'
               ],
@@ -234,15 +240,22 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-curl');
     grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-fetch-pages');
+    grunt.loadNpmTasks('grunt-nuget');
 
     grunt.registerTask('download', function(n) {
             grunt.log.writeln('GET angularjs version ' + grunt.option('ver'));
             grunt.task.run(['curl-dir']);
     });
 
+    grunt.registerTask('fixbetaversion', function(n) {
+        var newver = grunt.option('ver').replace('beta.', 'beta');
+        grunt.option('ver', newver);
+        grunt.log.writeln("Version: " + grunt.option('ver'));
+    });
+    
+
     grunt.registerTask('pack', function(n) {
-
-
+        grunt.task.run(['nugetpack']);
     });
 
     grunt.registerTask('download-locales', function(n){
@@ -251,5 +264,6 @@ module.exports = function (grunt) {
         grunt.task.run(['fetchpages']);
     });
 
-    grunt.registerTask('default', [/* 'clean:version', 'download-locales', */'download', 'template']); //still need --ver=1.2.9 for example
+    grunt.registerTask('preprocess', ['fixbetaversion', 'clean:version']);
+    grunt.registerTask('default', ['preprocess', /*'download-locales',*/ 'download', 'template', 'pack']); //still need --ver=1.2.9 for example
 };
